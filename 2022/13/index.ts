@@ -39,7 +39,6 @@ const pairs = inputMock.split("\n\n").map((pair) => {
   return [destructurePacket(firstPair), destructurePacket(secondPair)];
 });
 
-let wrongOrderPairs = 0;
 function compareOrder(left: Packet, right: Packet): any {
   console.log("comparing", left, right);
   const max = left.length > right.length ? left.length : right.length;
@@ -47,8 +46,8 @@ function compareOrder(left: Packet, right: Packet): any {
     if (left[i] !== undefined && right[i] === undefined) return false;
     if (left[i] === undefined && right[i] !== undefined) return true;
     if (!Array.isArray(left[i]) && !Array.isArray(right[i])) {
-      if (left[i] < right[i]) return false;
-      if (left[i] > right[i]) return true;
+      if (left[i] < right[i]) return true;
+      if (left[i] > right[i]) return false;
       else continue;
     }
     if (!Array.isArray(left[i]) && Array.isArray(right[i])) {
@@ -57,13 +56,17 @@ function compareOrder(left: Packet, right: Packet): any {
     if (Array.isArray(left[i]) && !Array.isArray(right[i])) {
       return compareOrder(left[i], [right[i]]);
     }
-    return compareOrder(left[i], right[i]);
+    const help = compareOrder(left[i], right[i]);
+    if (help !== undefined) return help;
   }
+  return undefined;
 }
 
+let rightOrderPairs = 0;
 pairs.forEach(([first, second], i) => {
   if (compareOrder(first, second)) {
+    rightOrderPairs += i + 1;
     console.log(`Pairs ${i + 1} in order`);
   }
 });
-console.log(wrongOrderPairs);
+console.log(rightOrderPairs);
