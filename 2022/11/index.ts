@@ -1,4 +1,4 @@
-console.time("a");
+console.time("time");
 
 import { inputMock, input } from "./input";
 
@@ -24,7 +24,7 @@ const monkeys = input.split("\n\n").map((monkey) => {
   return {
     items,
     operation: {
-      value: +operation[1] || "self",
+      value: +operation[1],
       operand: +operation[1] ? operation[0] : "pow",
     },
     test: +test[test.length - 1],
@@ -61,7 +61,7 @@ for (let i = 1; i <= 10000; i++) {
 }
 let max = 0,
   secondMax = 0;
-monkeys.forEach((m, i) => {
+monkeys.forEach((m) => {
   if (m.inspects > max) {
     secondMax = max;
     max = m.inspects;
@@ -70,4 +70,4 @@ monkeys.forEach((m, i) => {
   }
 });
 console.log(max * secondMax);
-console.timeEnd("a");
+console.timeEnd("time");
