@@ -121,7 +121,8 @@ function step1() {
 }
 async function step2() {
   const range = 4000000;
-  const rows = [];
+  let beaconY = 0,
+    beaconX = 0;
   for (let row = 0; row <= range; row++) {
     let arr: any[] = [];
     for (let s = 0; s < sensors.length; s++) {
@@ -185,15 +186,9 @@ async function step2() {
         }
       }
     }
-    rows.push(arr);
-  }
-  let beaconY = 0,
-    beaconX = 0;
-  for (let i = 0; i < rows.length; i++) {
-    if (rows[i].length > 1) {
-      beaconY = i;
-      beaconX = rows[i][0][1] + 1;
-      break;
+    if (arr.length > 1) {
+      beaconY = row;
+      beaconX = arr[0][1] + 1;
     }
   }
   const result = "tuning frequency: " + (beaconX * 4000000 + beaconY);
