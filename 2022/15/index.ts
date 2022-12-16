@@ -25,74 +25,25 @@ input.split("\n").forEach((line) => {
   });
 });
 
-let minRow = Infinity,
-  minColumn = Infinity,
-  maxRow = -Infinity,
-  maxColumn = -Infinity;
-
-sensors.forEach((s) => {
-  if (s.column < minColumn) minColumn = s.column;
-  if (s.column > maxColumn) maxColumn = s.column;
-  if (s.row < minRow) minRow = s.row;
-  if (s.row > maxRow) maxRow = s.row;
-});
-beacons.forEach((b) => {
-  if (b.column < minColumn) minColumn = b.column;
-  if (b.column > maxColumn) maxColumn = b.column;
-  if (b.row < minRow) minRow = b.row;
-  if (b.row > maxRow) maxRow = b.row;
-});
-
-/**
- * ⚠⚠⚠ WARNING: ⚠⚠⚠
- * DO NOT RUN THIS SHIT ON REAL INPUT
- * OUT OF MEMORY GUARANTEED
- */
-function visualize() {
-  const grid: string[][] = Array(Math.abs(minRow) + Math.abs(maxRow))
-    .fill(0)
-    .map((row) =>
-      Array(Math.abs(minColumn) + Math.abs(maxColumn))
-        .fill(0)
-        .map(() => ".")
-    );
-
-  function printGrid(grid: string[][]) {
-    console.log(
-      "   " +
-        Array(grid[0].length)
-          .fill(0)
-          .map((_, i) => Math.trunc(i / 10) || " ")
-          .join(" ")
-    );
-    console.log(
-      "   " +
-        Array(grid[0].length)
-          .fill(0)
-          .map((_, i) => (i > 9 ? i % 10 : i))
-          .join(" ")
-    );
-    grid.forEach((row, rowIndex) => {
-      let str = rowIndex < 10 ? rowIndex + "  " : rowIndex + " ";
-      row.forEach((_, columnIndex) => {
-        const beacon = beacons.find(
-          (b) =>
-            b.column - minColumn === columnIndex && b.row - minRow === rowIndex
-        );
-        const sensor = sensors.find(
-          (s) =>
-            s.column - minColumn === columnIndex && s.row - minRow === rowIndex
-        );
-        if (sensor) str += "S ";
-        else if (beacon) str += "B ";
-        else str += ". ";
-      });
-      console.log(str);
-    });
-  }
-  printGrid(grid);
-}
 function step1() {
+  let minRow = Infinity,
+    minColumn = Infinity,
+    maxRow = -Infinity,
+    maxColumn = -Infinity;
+
+  sensors.forEach((s) => {
+    if (s.column < minColumn) minColumn = s.column;
+    if (s.column > maxColumn) maxColumn = s.column;
+    if (s.row < minRow) minRow = s.row;
+    if (s.row > maxRow) maxRow = s.row;
+  });
+  beacons.forEach((b) => {
+    if (b.column < minColumn) minColumn = b.column;
+    if (b.column > maxColumn) maxColumn = b.column;
+    if (b.row < minRow) minRow = b.row;
+    if (b.row > maxRow) maxRow = b.row;
+  });
+
   const rowNumber = 2000000;
   const singleRow = Array(Math.abs(minColumn) + Math.abs(maxColumn))
     .fill(0)
@@ -164,8 +115,9 @@ async function step2() {
           }
         }
 
-        if (!pushedAlready)
+        if (!pushedAlready) {
           arr.push([remainingDistanceLeft, remainingDistanceRight]);
+        }
       }
     }
     arr.sort((a, b) => (a[0] < b[0] ? -1 : 1));
@@ -189,6 +141,7 @@ async function step2() {
     if (arr.length > 1) {
       beaconY = row;
       beaconX = arr[0][1] + 1;
+      break;
     }
   }
   const result = "tuning frequency: " + (beaconX * 4000000 + beaconY);
