@@ -1,11 +1,11 @@
 import { inputMock, input } from "./input";
-
+console.time("exec time");
 type Valve = {
   name: string;
   value: number;
   neighbours: string[];
 };
-const valves: Valve[] = inputMock.split("\n").map((line) => {
+const valves: Valve[] = input.split("\n").map((line) => {
   const name = line.substring(6, 8);
   const value = line.substring(line.indexOf("=") + 1, line.indexOf(";"));
   const neighbours = line
@@ -65,7 +65,8 @@ function totalPressurePaths(
   return max;
 }
 function step1() {
-  const currentValve: Valve = valves[0];
+  const currentValve: Valve = valves.find((v) => v.name === "AA") as Valve;
+  console.log(currentValve);
   console.log(
     totalPressurePaths(
       currentValve,
@@ -76,3 +77,4 @@ function step1() {
   );
 }
 step1();
+console.timeEnd("exec time");
