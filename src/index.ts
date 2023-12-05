@@ -1,10 +1,10 @@
 #!/usr/bin/env node
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath, pathToFileURL } from "url";
 import { Command } from "commander";
 import { group, select, confirm } from "@clack/prompts";
 import chalk from "chalk";
-import fs from "fs/promises";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,7 +24,7 @@ program.action(async () => {
       value: dir.name,
     }));
 
-  await group(
+  const params = await group(
     {
       year: () => {
         return select({
@@ -33,7 +33,7 @@ program.action(async () => {
           initialValue: "2023",
         });
       },
-      challenges: async ({ results }) => {
+      challenge: async ({ results }) => {
         const challenges = (
           await fs.readdir(path.join(__dirname, "./" + results.year), {
             withFileTypes: true,
@@ -63,6 +63,11 @@ program.action(async () => {
         process.exit(1);
       },
     }
+  );
+  const { challenge, year, watch } = params;
+  const challengePath = path.join(__dirname, `./${year}/${challenge}/index.js`);
+  const module = await import(
+    pathToFileURL(challengePath) as unknown as string
   );
 });
 
