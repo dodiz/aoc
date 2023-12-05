@@ -1,14 +1,14 @@
 {
-  "name": "dodiz-aoc",
+  "name": "d-aoc",
   "version": "1.0.0",
   "bin": {
-    "dodiz-aoc": "./dist/index.js"
+    "d-aoc": "./dist/index.js"
   },
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsc -w",
-    "start": "",
+    "link": "(pnpm -g unlink | true) && pnpm -g link",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +20,8 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "chalk": "^5.3.0",
     "commander": "^11.1.0"
   }
 }

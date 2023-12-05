@@ -11,7 +11,9 @@ const literalNumbers = {
   seven: 7,
   eight: 8,
   nine: 9,
-};
+} as const;
+
+type LiteralNumbers = keyof typeof literalNumbers;
 
 function part1() {
   function calibrateLine(line: string) {
@@ -42,7 +44,7 @@ function part2() {
     const { first, last } = Object.keys(literalNumbers)
       .filter((n) => line.search(n) !== -1)
       .map((n) => ({
-        value: literalNumbers[n],
+        value: literalNumbers[n as LiteralNumbers],
         index: line.search(n),
       }))
       .reduce(
