@@ -14,6 +14,7 @@ const literalNumbers = {
 } as const;
 
 type LiteralNumbers = keyof typeof literalNumbers;
+type LiteralNumbersValue = (typeof literalNumbers)[LiteralNumbers];
 
 function part1() {
   function calibrateLine(line: string) {
@@ -50,8 +51,8 @@ function part2() {
       .reduce(
         (acc, curr) => {
           const { index, value } = curr;
-          let first: number | null = null;
-          let last: number | null = null;
+          let first: LiteralNumbersValue | null = null;
+          let last: LiteralNumbersValue | null = null;
           if (index < acc.first) {
             first = value;
           }
@@ -87,5 +88,7 @@ function part2() {
     return acc + calibrateLine(curr);
   }, 0);
 
-  console.log(result);
+  console.log(result, "hi");
 }
+
+part1();

@@ -3,15 +3,12 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { Command } from "commander";
-import { group, select, confirm } from "@clack/prompts";
+import { group, select, confirm, text, intro } from "@clack/prompts";
 import chalk from "chalk";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const program = new Command();
-
-program.name(`${chalk.hex("#b9ffa7").bold("Dodiz")} advent of code solutions`);
-
 program.action(async () => {
   const years = (
     await fs.readdir(path.join(__dirname, "./"), {
@@ -26,6 +23,8 @@ program.action(async () => {
 
   const params = await group(
     {
+      _: () =>
+        intro(`${chalk.hex("#b9ffa7").bold("Dodiz")} advent of code solutions`),
       year: () => {
         return select({
           message: "Select a year",
@@ -66,9 +65,7 @@ program.action(async () => {
   );
   const { challenge, year, watch } = params;
   const challengePath = path.join(__dirname, `./${year}/${challenge}/index.js`);
-  const module = await import(
-    pathToFileURL(challengePath) as unknown as string
-  );
+  await import(pathToFileURL(challengePath) as unknown as string);
 });
 
 program.parse(process.argv);

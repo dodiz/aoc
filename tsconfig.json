@@ -2,15 +2,16 @@
   "display": "Node LTS",
   "_version": "18.1.0",
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["ES2023"],
+    "target": "ESNext",
     "outDir": "dist",
-    "module": "ESNext",
-    "target": "ES2015",
+    "module": "NodeNext",
+    "sourceMap": true,
+    "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }
