@@ -62,14 +62,23 @@ program.action(async () => {
   const watchFlag = (program.opts().watch as boolean) ?? false;
   const challengePath = path.join(__dirname, `./${year}/${challenge}/index.js`);
   if (watchFlag) {
-    chokidar.watch(challengePath).on("all", async (event, path) => {
+    chokidar.watch(challengePath).on("all", async () => {
       try {
+        const startTime = Date.now();
         await require(challengePath);
+        const executionTime = new Date(Date.now() - startTime);
         delete require.cache[require.resolve(challengePath)];
+        console.log(
+          `\n${chalk.hex("#a0f977")("Execution time:")} ${chalk
+            .hex("#a0f977")
+            .bold(executionTime.getMilliseconds() + "ms")}`
+        );
+        console.log(
+          `\n${chalk.hex("#fff977")("Waiting for changes to the file ...")}`
+        );
       } catch (e) {
         console.error(e);
       }
-      console.log("Waiting for changes to the file ...");
     });
   } else {
     await require(challengePath);
