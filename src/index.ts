@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 import fs from "fs/promises";
 import path from "path";
-import { fileURLToPath, pathToFileURL } from "url";
 import { Command } from "commander";
-import { group, select, confirm, text, intro } from "@clack/prompts";
-import chalk from "chalk";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import chokidar from "chokidar";
 
 const program = new Command();
+program.option("-w, --watch", "run in watch mode");
 program.action(async () => {
+  const { group, select, intro } = await import("@clack/prompts");
+  const { Chalk } = await import("chalk");
+  const chalk = new Chalk();
+
   const years = (
     await fs.readdir(path.join(__dirname, "./"), {
       withFileTypes: true,
@@ -20,7 +21,6 @@ program.action(async () => {
       name: dir.name,
       value: dir.name,
     }));
-
   const params = await group(
     {
       _: () =>
@@ -51,11 +51,6 @@ program.action(async () => {
           initialValue: "1",
         });
       },
-      watch: () => {
-        return confirm({
-          message: "Run it in watch mode? (Dev only)",
-        });
-      },
     },
     {
       onCancel() {
@@ -63,9 +58,22 @@ program.action(async () => {
       },
     }
   );
-  const { challenge, year, watch } = params;
+  const { challenge, year } = params;
+  const watchFlag = (program.opts().watch as boolean) ?? false;
   const challengePath = path.join(__dirname, `./${year}/${challenge}/index.js`);
-  await import(pathToFileURL(challengePath) as unknown as string);
+  if (watchFlag) {
+    chokidar.watch(challengePath).on("all", async (event, path) => {
+      try {
+        await require(challengePath);
+        delete require.cache[require.resolve(challengePath)];
+      } catch (e) {
+        console.error(e);
+      }
+      console.log("Waiting for changes to the file ...");
+    });
+  } else {
+    await require(challengePath);
+  }
 });
 
 program.parse(process.argv);
