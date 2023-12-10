@@ -1,7 +1,10 @@
-export const inputTest = `1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet`;
+export const inputTest = `two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen`;
 
 export const input = `kjrqmzv9mmtxhgvsevenhvq7
 four2tszbgmxpbvninebxns6nineqbqzgjpmpqr
