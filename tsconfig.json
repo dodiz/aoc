@@ -1,17 +1,21 @@
 {
-  "display": "Node LTS",
-  "_version": "18.1.0",
-  "compilerOptions": {
-    "lib": ["ES2023"],
-    "target": "ESNext",
-    "outDir": "dist",
-    "module": "NodeNext",
-    "sourceMap": true,
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src"]
+	"display": "Node LTS",
+	"_version": "18.1.0",
+	"compilerOptions": {
+		"lib": ["ES2023"],
+		"target": "ESNext",
+		"outDir": "dist",
+		"module": "NodeNext",
+		"sourceMap": true,
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
+	},
+	"include": ["src"]
 }
